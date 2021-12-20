@@ -1,16 +1,16 @@
 import java.awt.Point;
 
-public class Ship {
+public class Enemy {
 
 private Point pos;
 private boolean isDead;
 
-Ship() {
+Enemy() {
    pos.move(0, 0);
    isDead = false;
 }
-Ship(Point position) {
+Enemy(Point position) {
    pos = position;
-   isDead = false;
 }
+
 }
