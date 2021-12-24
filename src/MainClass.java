@@ -12,52 +12,41 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
-public class MainClass extends JComponent implements KeyListener, ActionListener {
+public class MainClass extends JComponent implements ActionListener {
 private JFrame frame;
 private int screenWidth = 400, screenHeight = 500;
 
+
+Ship ship = new Ship(200, 200);
+
 MainClass() {
-   frame = new JFrame("Challenges One");
+   frame = new JFrame("Galaga");
    Container content = frame.getContentPane();
    content.setBackground(Color.BLACK);
    content.add(this);
-   setUp();
+   setup();
    
    Timer t = new Timer(5, this);
    t.start();
 }
 
-public void setUp() {
+public void setup() {
    frame.setSize(screenWidth+17, screenHeight+40);
    frame.setLocationRelativeTo(null);
    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    frame.setVisible(true);
+   frame.addKeyListener(ship);
 }
 
+public void paintComponent(Graphics g) {
+   ship.draw(g);
+}
 
 public void actionPerformed(ActionEvent e) {
-
+   ship.update();
+   repaint();
 }
 
-public void keyPressed(KeyEvent e) {
-   if(e.getKeyCode() == 32) {
-      //space
-   } else if(e.getKeyCode() == 39) {
-      //right arrow key
-   } else if(e.getKeyCode() == 37) {
-      //left arrow key
-   } 
-}
-public void keyReleased(KeyEvent e) {
-   if(e.getKeyCode() == 32) {
-      //space
-   } else if(e.getKeyCode() == 39) {
-      //right arrow key
-   } else if(e.getKeyCode() == 37) {
-      //left arrow key
-   }
-}
-public void keyTyped(KeyEvent e) {}
 }
 
 class RunMain {
