@@ -19,8 +19,9 @@ Ship(int x, int y) {
 }
 
 public void draw(Graphics g) {
-   g.setColor(Color.RED);
-   g.fillOval(pos.x, pos.y, 50, 50);
+   //g.setColor(Color.RED);
+   //g.fillOval(pos.x, pos.y, 50, 50);
+   Utility.drawPixelArt(pos.x, pos.y, "ship", g);
 }
 
 public void update() {
@@ -37,19 +38,16 @@ public void keyPressed(KeyEvent e) {
    } else if(e.getKeyCode() == 39) {
       //right arrow key
       rightPressed = true;
-      System.out.println("h");
    } else if(e.getKeyCode() == 37) {
       //left arrow key
       leftPressed = true;
    } 
 }
 public void keyReleased(KeyEvent e) {
-   System.out.println("o");
    if(e.getKeyCode() == 32) {
       //space
    } else if(e.getKeyCode() == 39) {
       //right arrow key
-      System.out.println("o");
       rightPressed = false;
    } else if(e.getKeyCode() == 37) {
       //left arrow key

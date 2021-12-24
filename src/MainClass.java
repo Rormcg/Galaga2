@@ -17,7 +17,7 @@ private JFrame frame;
 private int screenWidth = 400, screenHeight = 500;
 
 
-Ship ship = new Ship(200, 200);
+Ship ship = new Ship(200, 430);
 
 MainClass() {
    frame = new JFrame("Galaga");
@@ -26,7 +26,7 @@ MainClass() {
    content.add(this);
    setup();
    
-   Timer t = new Timer(5, this);
+   Timer t = new Timer(1, this);
    t.start();
 }
 
