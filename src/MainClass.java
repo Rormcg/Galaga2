@@ -18,6 +18,7 @@ private JFrame frame;
 private int screenWidth = 550, screenHeight = 650;
 
 private Ship ship = new Ship(200, 580);
+private StarBackdrop backdrop = new StarBackdrop(screenWidth, screenHeight);
 
 MainClass() {
    frame = new JFrame("Galaga");
@@ -40,10 +41,14 @@ public void setup() {
 
 public void paintComponent(Graphics g) {
    ship.draw(g);
+   backdrop.draw(g);
 }
 
 public void actionPerformed(ActionEvent e) {
    ship.update();
+   if(ship.getIsMoving()) {
+      backdrop.update();
+   }
    repaint();
 }
 

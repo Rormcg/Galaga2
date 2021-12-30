@@ -3,7 +3,11 @@ import java.awt.Color;
 
 
 public class Utility {
-
+   
+   public static int random(int low, int high) {
+      return (int)(Math.random() * (high - low) + low);
+   }
+   
    /*
    w = white
    r = red

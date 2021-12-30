@@ -8,6 +8,7 @@ public class Ship implements KeyListener {
 
 private Point2D.Double pos;
 private int speed = 5;
+private boolean isMoving = true;
 private boolean isDead = false;
 private boolean leftPressed = false, rightPressed = false;
 private Point2D.Double size = new Point2D.Double(60, 32);
@@ -17,6 +18,10 @@ Ship() {
 }
 Ship(int x, int y) {
    pos = new Point2D.Double(x, y);
+}
+
+public boolean getIsMoving() {
+   return isMoving;
 }
 
 public void draw(Graphics g) {
