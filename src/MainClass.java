@@ -3,7 +3,7 @@ import javax.swing.Timer;
 import javax.swing.JComponent;
 
 import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.Color;
 import java.awt.Container;
 
@@ -13,11 +13,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 public class MainClass extends JComponent implements ActionListener {
+
 private JFrame frame;
-private int screenWidth = 400, screenHeight = 500;
+private int screenWidth = 550, screenHeight = 650;
 
-
-Ship ship = new Ship(200, 430);
+private Ship ship = new Ship(200, 580);
 
 MainClass() {
    frame = new JFrame("Galaga");

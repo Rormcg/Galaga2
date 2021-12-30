@@ -1,4 +1,4 @@
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
@@ -6,22 +6,23 @@ import java.awt.Graphics;
 
 public class Ship implements KeyListener {
 
-private Point pos;
+private Point2D.Double pos;
 private int speed = 5;
 private boolean isDead = false;
 private boolean leftPressed = false, rightPressed = false;
+private Point2D.Double size = new Point2D.Double(60, 32);
 
 Ship() {
-   pos = new Point(0, 0);
+   pos = new Point2D.Double(0, 0);
 }
 Ship(int x, int y) {
-   pos = new Point(x, y);
+   pos = new Point2D.Double(x, y);
 }
 
 public void draw(Graphics g) {
    //g.setColor(Color.RED);
    //g.fillOval(pos.x, pos.y, 50, 50);
-   Utility.drawPixelArt(pos.x, pos.y, "ship", g);
+   Utility.drawPixelArt(pos.x, pos.y, "ship", g, 4);
 }
 
 public void update() {

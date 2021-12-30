@@ -45,9 +45,8 @@ public class Utility {
          "---------------",
          "---------------",
          "---------------"};
-   private static int artSize = 4; //change this to change pixel art size
    private static String[] pixelArt;
-   public static void drawPixelArt(int x, int y, String type, Graphics g) {
+   public static void drawPixelArt(double x, double y, String type, Graphics g, int size) {
       if(type == "ship") {
          pixelArt = shipArt;
       } else if(type == "enemy-bug") {
@@ -82,7 +81,7 @@ public class Utility {
                   break;
             }
             if(drawPixel) {
-               g.fillRect(x + col * artSize, y + row * artSize, artSize, artSize);
+               g.fillRect((int)(x + col * size), (int)(y + row * size), size, size);
             }
          }
       }
