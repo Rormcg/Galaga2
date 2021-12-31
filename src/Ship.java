@@ -26,7 +26,7 @@ public boolean getIsMoving() {
 }
 
 public void draw(Graphics g) {
-   Utility.drawPixelArt(pos.x, pos.y, "ship", g, 4);
+   Utility.drawPixelArt(pos.x, pos.y, "ship", g, 3);
    //g.setColor(Color.RED);
    //g.fillOval((int)pos.x, (int)pos.y, 50, 50);
 }

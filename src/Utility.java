@@ -11,9 +11,10 @@ public class Utility {
    /*
    w = white
    r = red
-   g = green
+   g = green-blue
    b = blue
    y = yellow
+   o = orange
    */
    private static String[] shipArt = {
          "-------w-------",
@@ -33,59 +34,100 @@ public class Utility {
          "ww--rr-w-rr--ww",
          "w------w------w"};
          
-   private static String[] enemyBugArt = {
-         "bbb---r---bbb",
-         "bbb--rrr--bbb",
-         "bbbb-yyy-bbbb",
-         "-bbb-rrr-bbb-",
-         "--bbbrrrbbb--",
-         "---bbyyybb---",
-         "----yyyyy----",
-         "---brryrrb---",
+   private static String[] enemyBugArt1 = {
+         "-b----y----b-",
          "--b-yryry-b--",
-         "-b----y----b-"};
-   private static String[] enemyShipArt = {
+         "---brryrrb---",
+         "----yyyyy----",
+         "---bbyyybb---",
+         "--bbbrrrbbb--",
+         "-bbb-rrr-bbb-",
+         "bbbb-yyy-bbbb",
+         "bbb--rrr--bbb",
+         "bbb---r---bbb"};
+   private static String[] enemyBugArt2 = {
+         "--b---y---b--",
+         "--b-yryry-b--",
+         "---brryrrb---",
+         "----yyyyy----",
+         "---bbyyybb---",
+         "--bbbrrrbbb--",
+         "--bb-rrr-bb--",
+         "--bb-yyy-bb--",
+         "--bb-rrr-bb--",
+         "--bb--r--bb--"};
+   private static String[] enemyShipArt1 = {
+         "--r--b-b--r--",
+         "rrr--b-b--rrr",
+         "rrr-wrwrw-rrr",
+         "rrr-wwwww-rrr",
+         "-rrrrwwwrrrr-",
+         "--rrrbbbrrr--",
+         "-rrrrbbbrrrr-",
+         "rrrrrwwwrrrrr",
+         "-rrr-bbb-rrr-",
+         "---r-----r---"};
+   private static String[] enemyShipArt2 = {
+         "--r--b-b--r--",
+         "--r--b-b--r--",
+         "--r-wrwrw-r--",
+         "--r-wwwww-r--",
+         "--rrrwwwrrr--",
+         "----rbbbr----",
+         "--rrrbbbrrr--",
+         "--rrrwwwrrr--",
+         "--rr-bbb-rr--",
+         "--rr--b--rr--"};
+   private static String[] enemyBossArt1 = {
+         "------g-g------",
+         "------g-g------",
+         "---ggoogoogg---",
+         "----googoog----",
+         "-----ggggg-----",
+         "----gyygyyg-----",
+         "--gggyyyyyggg--",
+         "gggggyyyyyggggg",
+         "-ggggyyyyygggg-",
+         "-gogg-o-o-ggog-",
+         "ggog--o-o--gogg",
+         "gogg-------ggog",
+         "goog-------goog",
+         "goog-------goog",
+         "gggg-------gggg",
+         "-gg---------gg-"};
+   private static String[] enemyBossArt2 = {
          "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------"};
-   private static String[] enemyBossArt = {
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------",
-         "---------------"};
+         "------g-g------",
+         "---ggoogoogg---",
+         "----googoog----",
+         "-----ggggg-----",
+         "---ggyygyygg----",
+         "--gggyyyyyggg--",
+         "gggggyyyyyggggg",
+         "-ggg-yyyyy-ggg-",
+         "--gg--o-o--gg--",
+         "--gg--o-o--gg--",
+         "--ggg-----ggg--",
+         "---gg-----gg---",
+         "----gg---gg----",
+         "-----gg-gg-----",
+         "------g-g------"};
    private static String[] pixelArt;
    public static void drawPixelArt(double x, double y, String type, Graphics g, int size) {
       if(type == "ship") {
          pixelArt = shipArt;
-      } else if(type == "enemy-bug") {
-         pixelArt = enemyBugArt;
-      } else if(type == "enemy-ship") {
-         pixelArt = enemyShipArt;
-      } else if(type == "enemy-boss") {
-         pixelArt = enemyBossArt;
+      } else if(type == "enemy-bug1") {
+         pixelArt = enemyBugArt1;
+      } else if(type == "enemy-bug2") {
+         pixelArt = enemyBugArt2;
+      } else if(type == "enemy-ship1") {
+         pixelArt = enemyShipArt1;
+      } else if(type == "enemy-ship2") {
+         pixelArt = enemyShipArt2;
+      } else if(type == "enemy-boss1") {
+         pixelArt = enemyBossArt1;
+      } else if(type == "enemy-boss2") {
+         pixelArt = enemyBossArt2;
       }
       
       for(int row = 0; row < pixelArt.length; row ++) {
@@ -101,7 +143,7 @@ public class Utility {
                   drawPixel = true;
                   break;
                case 'g':
-                  g.setColor(Color.GREEN);
+                  g.setColor(new Color(55, 140, 130));
                   drawPixel = true;
                   break;
                case 'b':
@@ -110,6 +152,10 @@ public class Utility {
                   break;
                case 'y':
                   g.setColor(Color.YELLOW);
+                  drawPixel = true;
+                  break;
+               case 'o':
+                  g.setColor(new Color(255, 123, 4));
                   drawPixel = true;
                   break;
             }
