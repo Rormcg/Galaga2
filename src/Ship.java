@@ -18,6 +18,7 @@ Ship() {
 }
 Ship(int x, int y) {
    pos = new Point2D.Double(x, y);
+   
 }
 
 public boolean getIsMoving() {
@@ -25,9 +26,9 @@ public boolean getIsMoving() {
 }
 
 public void draw(Graphics g) {
-   //g.setColor(Color.RED);
-   //g.fillOval(pos.x, pos.y, 50, 50);
    Utility.drawPixelArt(pos.x, pos.y, "ship", g, 4);
+   //g.setColor(Color.RED);
+   //g.fillOval((int)pos.x, (int)pos.y, 50, 50);
 }
 
 public void update() {

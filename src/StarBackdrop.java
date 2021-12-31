@@ -7,7 +7,7 @@ public class StarBackdrop {
 private int numStars = 250;
 private Point2D.Double[] positions = new Point2D.Double[numStars];
 private boolean[] isOn = new boolean[numStars];
-private double speed = 4;
+private double speed = 2;
 private Color[] colors = new Color[numStars];
 private Dimension size; //overall
 
@@ -31,7 +31,7 @@ public void draw(Graphics g) {
       } else {
          g.setColor(Color.BLACK);
       }
-      g.fillOval((int)positions[i].x, (int)positions[i].y, 2, 2);
+      g.fillOval((int)positions[i].x, (int)positions[i].y, 3, 3);
    }
 }
 

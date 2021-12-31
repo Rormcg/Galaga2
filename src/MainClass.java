@@ -19,6 +19,9 @@ private int screenWidth = 550, screenHeight = 650;
 
 private Ship ship = new Ship(200, 580);
 private StarBackdrop backdrop = new StarBackdrop(screenWidth, screenHeight);
+private Enemy[] enemies = new Enemy[40];
+
+
 
 MainClass() {
    frame = new JFrame("Galaga");
@@ -32,6 +35,22 @@ MainClass() {
 }
 
 public void setup() {
+   for(int i = 0; i < 4; i ++) {
+      enemies[i] = new Enemy(230 + 40 * i, 70, "enemy-boss");
+   }
+   for(int i = 4; i < 12; i ++) {
+      enemies[i] = new Enemy(200 + 40 * (i - 4), 100, "enemy-ship");
+   }
+   for(int i = 12; i < 20; i ++) {
+      enemies[i] = new Enemy(200 + 40 * (i - 12), 130, "enemy-ship");
+   }
+   for(int i = 20; i < 30; i ++) {
+      enemies[i] = new Enemy(50 + 45 * (i - 20), 160, "enemy-bug");
+   }
+   for(int i = 30; i < 40; i ++) {
+      enemies[i] = new Enemy(50 + 45 * (i - 30), 200, "enemy-bug");
+   }
+   
    frame.setSize(screenWidth+17, screenHeight+40);
    frame.setLocationRelativeTo(null);
    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,14 +59,20 @@ public void setup() {
 }
 
 public void paintComponent(Graphics g) {
-   ship.draw(g);
    backdrop.draw(g);
+   ship.draw(g);
+   for(int i = 0; i < enemies.length; i ++) {
+      enemies[i].draw(g);
+   }
 }
 
 public void actionPerformed(ActionEvent e) {
    ship.update();
    if(ship.getIsMoving()) {
       backdrop.update();
+   }
+   for(int i = 0; i < enemies.length; i ++) {
+      enemies[i].update();
    }
    repaint();
 }

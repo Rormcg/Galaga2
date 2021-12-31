@@ -34,6 +34,33 @@ public class Utility {
          "w------w------w"};
          
    private static String[] enemyBugArt = {
+         "bbb---r---bbb",
+         "bbb--rrr--bbb",
+         "bbbb-yyy-bbbb",
+         "-bbb-rrr-bbb-",
+         "--bbbrrrbbb--",
+         "---bbyyybb---",
+         "----yyyyy----",
+         "---brryrrb---",
+         "--b-yryry-b--",
+         "-b----y----b-"};
+   private static String[] enemyShipArt = {
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------",
+         "---------------"};
+   private static String[] enemyBossArt = {
          "---------------",
          "---------------",
          "---------------",
@@ -55,8 +82,10 @@ public class Utility {
          pixelArt = shipArt;
       } else if(type == "enemy-bug") {
          pixelArt = enemyBugArt;
+      } else if(type == "enemy-ship") {
+         pixelArt = enemyShipArt;
       } else if(type == "enemy-boss") {
-      
+         pixelArt = enemyBossArt;
       }
       
       for(int row = 0; row < pixelArt.length; row ++) {
@@ -85,7 +114,7 @@ public class Utility {
                   break;
             }
             if(drawPixel) {
-               g.fillRect((int)(x + col * size), (int)(y + row * size), size, size);
+               g.fillRect((int)(x + col * (size) - (0.5 * pixelArt[row].length() - 2)), (int)(y + row * (size) - (0.5 * pixelArt.length - 2)), size, size);
             }
          }
       }
