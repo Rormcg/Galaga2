@@ -9,7 +9,7 @@ private Point2D.Double[] positions = new Point2D.Double[numStars];
 private boolean[] isOn = new boolean[numStars];
 private double speed = 2;
 private Color[] colors = new Color[numStars];
-private Dimension size; //overall
+private Dimension size; //overall size
 
 StarBackdrop(int width, int height) {
    size = new Dimension(width, height);

@@ -113,7 +113,7 @@ public class Utility {
          "-----gg-gg-----",
          "------g-g------"};
    private static String[] pixelArt;
-   public static void drawPixelArt(double x, double y, String type, Graphics g, int size) {
+   public static void drawPixelArt(double x, double y, String type, Graphics g, int pixelSize) {
       if(type == "ship") {
          pixelArt = shipArt;
       } else if(type == "enemy-bug1") {
@@ -132,35 +132,33 @@ public class Utility {
       
       for(int row = 0; row < pixelArt.length; row ++) {
          for(int col = 0; col < pixelArt[row].length(); col ++) {
-            boolean drawPixel = false;
+            boolean drawPixel = true;
             switch(pixelArt[row].charAt(col)) {
                case 'w':
                   g.setColor(Color.WHITE);
-                  drawPixel = true;
                   break;
                case 'r':
                   g.setColor(Color.RED);
-                  drawPixel = true;
                   break;
                case 'g':
                   g.setColor(new Color(55, 140, 130));
-                  drawPixel = true;
                   break;
                case 'b':
                   g.setColor(Color.BLUE);
-                  drawPixel = true;
                   break;
                case 'y':
                   g.setColor(Color.YELLOW);
-                  drawPixel = true;
                   break;
                case 'o':
                   g.setColor(new Color(255, 123, 4));
-                  drawPixel = true;
+                  break;
+               case '-':
+                  drawPixel = false;
                   break;
             }
             if(drawPixel) {
-               g.fillRect((int)(x + col * (size) - (0.5 * pixelArt[row].length() - 2)), (int)(y + row * (size) - (0.5 * pixelArt.length - 2)), size, size);
+               g.fillRect((int)(x + (pixelSize * (col - pixelArt[row].length() * 0.5))), 
+                          (int)(y + (pixelSize * (row - pixelArt.length * 0.5))), pixelSize, pixelSize);
             }
          }
       }

@@ -11,14 +11,12 @@ private int speed = 5;
 private boolean isMoving = true;
 private boolean isDead = false;
 private boolean leftPressed = false, rightPressed = false;
-private Point2D.Double size = new Point2D.Double(60, 32);
+private Point2D.Double size = new Point2D.Double(45, 24);
+private int xRestriction;
 
-Ship() {
-   pos = new Point2D.Double(0, 0);
-}
-Ship(int x, int y) {
+Ship(int x, int y, int xRestriction) {
    pos = new Point2D.Double(x, y);
-   
+   this.xRestriction = xRestriction;
 }
 
 public boolean getIsMoving() {
@@ -27,14 +25,14 @@ public boolean getIsMoving() {
 
 public void draw(Graphics g) {
    Utility.drawPixelArt(pos.x, pos.y, "ship", g, 3);
-   //g.setColor(Color.RED);
-   //g.fillOval((int)pos.x, (int)pos.y, 50, 50);
+   g.setColor(Color.YELLOW);
+   g.fillOval((int)pos.x - 5, (int)pos.y - 5, 10, 10);
 }
 
 public void update() {
-   if(rightPressed) {
+   if(rightPressed && pos.x < xRestriction - 0.6 * size.x) {
       pos.x += speed;
-   } else if(leftPressed) {
+   } else if(leftPressed && pos.x > 0 + 0.6 * size.x) {
       pos.x -= speed;
    }
 }
