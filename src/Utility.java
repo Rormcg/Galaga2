@@ -150,7 +150,7 @@ public class Utility {
                   g.setColor(Color.YELLOW);
                   break;
                case 'o':
-                  g.setColor(new Color(255, 123, 4));
+                  g.setColor(new Color(255, 90, 13));
                   break;
                case '-':
                   drawPixel = false;

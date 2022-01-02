@@ -17,11 +17,10 @@ public class MainClass extends JComponent implements ActionListener {
 private JFrame frame;
 private int screenWidth = 550, screenHeight = 650;
 
-private Ship ship = new Ship(250, 550, screenWidth);
+private Ship ship = new Ship(275, 550, screenWidth);
 private StarBackdrop backdrop = new StarBackdrop(screenWidth, screenHeight);
 private Enemy[] enemies = new Enemy[40];
-
-
+private Laser[] lasers = new Laser[100];
 
 MainClass() {
    frame = new JFrame("Galaga");
@@ -51,6 +50,11 @@ public void setup() {
       enemies[i] = new Enemy(70 + 45 * (i - 30), 220, "enemy-bug");
    }
    
+   for(int i = 0; i < lasers.length; i ++) {
+      //fill the lasers array with placeholder objects
+      lasers[i] = new Laser(-400, -400, "null", 0, 0);
+   }
+   
    frame.setSize(screenWidth+17, screenHeight+40);
    frame.setLocationRelativeTo(null);
    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,14 +62,21 @@ public void setup() {
    frame.addKeyListener(ship);
 }
 
+//draw here
 public void paintComponent(Graphics g) {
    backdrop.draw(g);
+   
+   for(int i = 0; i < lasers.length; i++) {
+      lasers[i].draw(g);
+   }
+   
    ship.draw(g);
    for(int i = 0; i < enemies.length; i ++) {
       enemies[i].draw(g);
    }
 }
 
+//update here
 public void actionPerformed(ActionEvent e) {
    ship.update();
    if(ship.getIsMoving()) {
@@ -74,6 +85,29 @@ public void actionPerformed(ActionEvent e) {
    for(int i = 0; i < enemies.length; i ++) {
       enemies[i].update();
    }
+   
+   if(ship.getIsShooting()) {
+      int numPlayerBullets = 0;
+      for(int i = 0; i < lasers.length; i ++) {
+         if(lasers[i].getType() == "player" && lasers[i].getIsDead() != true) {
+            numPlayerBullets ++;
+         }
+      }
+      if(numPlayerBullets < 3) {
+         for(int i = 0; i < lasers.length; i ++) {
+            if(lasers[i].getIsDead() || lasers[i].getType() == "null") {
+               lasers[i] = new Laser(ship.getPos().x, ship.getPos().y - 24, "player", 0, -6);
+               ship.setIsShooting(false);
+               break;
+            }
+         }
+      }
+   }
+   
+   for(int i = 0; i < lasers.length; i++) {
+      lasers[i].update();
+   }
+   
    repaint();
 }
 

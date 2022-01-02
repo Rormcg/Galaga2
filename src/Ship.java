@@ -7,12 +7,13 @@ import java.awt.Graphics;
 public class Ship implements KeyListener {
 
 private Point2D.Double pos;
-private int speed = 5;
+private int speed = 3;
 private boolean isMoving = true;
 private boolean isDead = false;
 private boolean leftPressed = false, rightPressed = false;
 private Point2D.Double size = new Point2D.Double(45, 24);
 private int xRestriction;
+private boolean isShooting;
 
 Ship(int x, int y, int xRestriction) {
    pos = new Point2D.Double(x, y);
@@ -25,8 +26,8 @@ public boolean getIsMoving() {
 
 public void draw(Graphics g) {
    Utility.drawPixelArt(pos.x, pos.y, "ship", g, 3);
-   g.setColor(Color.YELLOW);
-   g.fillOval((int)pos.x - 5, (int)pos.y - 5, 10, 10);
+   //g.setColor(Color.YELLOW);
+   //g.fillOval((int)pos.x - 5, (int)pos.y - 5, 10, 10);
 }
 
 public void update() {
@@ -37,9 +38,23 @@ public void update() {
    }
 }
 
+public boolean getIsShooting() {
+   return isShooting;
+}
+
+public Point2D.Double getPos() {
+   return pos;
+}
+
+public void setIsShooting(boolean h) {
+   isShooting = h;
+}
+
 public void keyPressed(KeyEvent e) {
    if(e.getKeyCode() == 32) {
       //space
+      isShooting = true;
+      //System.out.println("H");
    } else if(e.getKeyCode() == 39) {
       //right arrow key
       rightPressed = true;
@@ -51,6 +66,7 @@ public void keyPressed(KeyEvent e) {
 public void keyReleased(KeyEvent e) {
    if(e.getKeyCode() == 32) {
       //space
+      isShooting = false;
    } else if(e.getKeyCode() == 39) {
       //right arrow key
       rightPressed = false;
