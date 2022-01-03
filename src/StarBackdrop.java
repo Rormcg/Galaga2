@@ -41,9 +41,9 @@ public void update() {
       if(positions[i].y >= size.height + 50) {
          positions[i].y = 0;
       }
-      if(Utility.random(0, 150) == 5) {
+      if(Utility.random(0, 120) == 5) {
          isOn[i] = false;
-      } else if (Utility.random(0, 150) == 5) {
+      } else if (Utility.random(0, 120) == 5) {
          isOn[i] = true;
       }
    }

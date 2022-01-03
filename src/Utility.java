@@ -8,6 +8,28 @@ public class Utility {
       return (int)(Math.random() * (high - low) + low);
    }
    
+   public static int randomExcludeZero(int low, int high) {
+      int num = 0;
+      while(num == 0) {
+         num = (int)(Math.random() * (high - low) + low);
+      }
+      return num;
+   }
+   
+   public static double vectorDirection(double x, double y) {
+       double dir = Math.atan(y / x) * 180 / Math.PI;
+      if((x < 0 && y > 0) || (x < 0 && y < 0)) {
+         dir += 270;
+      } else  {
+         dir += 90;
+      } 
+      return dir;
+   }
+   
+   public static double toRadians(double degrees) {
+      return degrees * (Math.PI / 180);
+   }
+   
    /*
    w = white
    r = red
