@@ -83,7 +83,17 @@ public void actionPerformed(ActionEvent e) {
       backdrop.update();
    }
    for(int i = 0; i < enemies.length; i ++) {
-      enemies[i].update();
+      Enemy a = enemies[i];
+      a.update();
+      
+      for(int j = 0; j < lasers.length; j ++) {
+         Laser b = lasers[j];
+         if(b.getType() == "player"  && !a.getIsDead() && !b.getIsDead() && b.getPos().x >= a.getPos().x - a.getSize().x && b.getPos().x <= a.getPos().x + a.getSize().x &&
+         b.getPos().y >= a.getPos().y - a.getSize().y && b.getPos().y <= a.getPos().y + a.getSize().y) {
+            b.setIsDead(true);
+            a.setHealth(a.getHealth() - 1);
+         }
+      }
    }
    
    if(ship.getIsShooting()) {
@@ -93,10 +103,10 @@ public void actionPerformed(ActionEvent e) {
             numPlayerBullets ++;
          }
       }
-      if(numPlayerBullets < 3) {
+      if(numPlayerBullets < 2) {
          for(int i = 0; i < lasers.length; i ++) {
             if(lasers[i].getIsDead() || lasers[i].getType() == "null") {
-               lasers[i] = new Laser(ship.getPos().x, ship.getPos().y - 24, "player", 0, -6);
+               lasers[i] = new Laser(ship.getPos().x, ship.getPos().y - 24, "player", 0, -8);
                ship.setIsShooting(false);
                break;
             }

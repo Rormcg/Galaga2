@@ -5,7 +5,7 @@ import java.awt.Graphics;
 public class Laser {
 
 private Point2D.Double pos;
-private int speed = 8;
+private int speed = 10;
 private Point2D.Double velocity;
 private String type;
 private boolean isDead;
@@ -22,14 +22,14 @@ public void draw(Graphics g) {
          g.setColor(Color.BLUE);
          g.fillRect((int)pos.x - 4, (int)pos.y - 2, 8, 2);
          g.fillRect((int)pos.x - 2, (int)pos.y - 5, 4, 4);
-         g.setColor(Color.WHITE);
-         g.fillRect((int)pos.x - 1, (int)pos.y, 2, 7);
+         g.setColor(Color.RED);
+         g.fillRect((int)pos.x - 1, (int)pos.y, 2, 8);
       } else {
          g.setColor(Color.RED);
          g.fillRect((int)pos.x - 4, (int)pos.y , 8, 2);
          g.fillRect((int)pos.x - 2, (int)pos.y + 1, 4, 4);
          g.setColor(Color.WHITE);
-         g.fillRect((int)pos.x - 1, (int)pos.y - 7, 2, 7);
+         g.fillRect((int)pos.x - 1, (int)pos.y - 8, 2, 8);
       }
    }
    
@@ -41,7 +41,7 @@ public void update() {
    
    if(pos.y > 600) {
       isDead = true;
-   } else if(pos.y < -50) {
+   } else if(pos.y < -10) {
       isDead= true;
    }
 }
@@ -52,6 +52,14 @@ public boolean getIsDead() {
 
 public String getType() {
    return type;
+}
+
+public Point2D.Double getPos() {
+   return pos;
+}
+
+public void setIsDead(boolean a) {
+   isDead = a;
 }
 
 }
