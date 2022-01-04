@@ -26,10 +26,10 @@ Enemy(int x, int y, String type) {
    pos = new Point2D.Double(x, y);
    this.type = type;
    if(type == "enemy-bug" || type == "enemy-ship") {
-      size = new Point2D.Double(20, 15);
+      size = new Point2D.Double(18, 13);
       health = 1;
    } else {
-      size = new Point2D.Double(25, 25);
+      size = new Point2D.Double(23, 23);
       health = 2;
    }
 }
@@ -57,15 +57,15 @@ public void draw(Graphics g) {
       } else {
          if(health > 1) {
             if((timer / 40) % 2 == 0) {
-               Utility.drawPixelArt(0, 0, "enemy-boss1", g, 2);
+               Utility.drawPixelArt(0, 0, "enemy-boss1A", g, 2);
             } else {
-               Utility.drawPixelArt(0, 0, "enemy-boss2", g, 2);
+               Utility.drawPixelArt(0, 0, "enemy-boss2A", g, 2);
             }
          } else {
             if((timer / 40) % 2 == 0) {
-               Utility.drawPixelArt(0, 0, "enemy-boss1", g, 2);
+               Utility.drawPixelArt(0, 0, "enemy-boss1B", g, 2);
             } else {
-               Utility.drawPixelArt(0, 0, "enemy-boss2", g, 2);
+               Utility.drawPixelArt(0, 0, "enemy-boss2B", g, 2);
             }
 
          }

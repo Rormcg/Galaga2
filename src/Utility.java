@@ -37,6 +37,8 @@ public class Utility {
    b = blue
    y = yellow
    o = orange
+   p = purple
+   m = magenta
    */
    private static String[] shipArt = {
          "-------w-------",
@@ -100,7 +102,7 @@ public class Utility {
          "--rrrwwwrrr--",
          "--rr-bbb-rr--",
          "--rr--b--rr--"};
-   private static String[] enemyBossArt1 = {
+   private static String[] enemyBossArt1A = {
          "------g-g------",
          "------g-g------",
          "---ggoogoogg---",
@@ -117,7 +119,7 @@ public class Utility {
          "goog-------goog",
          "gggg-------gggg",
          "-gg---------gg-"};
-   private static String[] enemyBossArt2 = {
+   private static String[] enemyBossArt2A = {
          "---------------",
          "------g-g------",
          "---ggoogoogg---",
@@ -134,6 +136,40 @@ public class Utility {
          "----gg---gg----",
          "-----gg-gg-----",
          "------g-g------"};
+   private static String[] enemyBossArt1B = {
+         "------b-b------",
+         "------b-b------",
+         "---bbmmbmmbb---",
+         "----bmmbmmb----",
+         "-----bbbbb-----",
+         "----bppbppb-----",
+         "--bbbpppppbbb--",
+         "bbbbbpppppbbbbb",
+         "-bbbbpppppbbbb-",
+         "-bmbb-m-m-bbmb-",
+         "bbmb--m-m--bmbb",
+         "bmbb-------bbmb",
+         "bmmb-------bmmb",
+         "bmmb-------bmmb",
+         "bbbb-------bbbb",
+         "-bb---------bb-"};
+   private static String[] enemyBossArt2B = {
+         "---------------",
+         "------b-b------",
+         "---bbmmbmmbb---",
+         "----bmmbmmb----",
+         "-----bbbbb-----",
+         "---bbppbppbb----",
+         "--bbbpppppbbb--",
+         "bbbbbpppppbbbbb",
+         "-bbb-ppppp-bbb-",
+         "--bb--m-m--bb--",
+         "--bb--m-m--bb--",
+         "--bbb-----bbb--",
+         "---bb-----bb---",
+         "----bb---bb----",
+         "-----bb-bb-----",
+         "------b-b------"};
    private static String[] pixelArt;
    public static void drawPixelArt(double x, double y, String type, Graphics g, int pixelSize) {
       if(type == "ship") {
@@ -146,10 +182,14 @@ public class Utility {
          pixelArt = enemyShipArt1;
       } else if(type == "enemy-ship2") {
          pixelArt = enemyShipArt2;
-      } else if(type == "enemy-boss1") {
-         pixelArt = enemyBossArt1;
-      } else if(type == "enemy-boss2") {
-         pixelArt = enemyBossArt2;
+      } else if(type == "enemy-boss1A") {
+         pixelArt = enemyBossArt1A;
+      } else if(type == "enemy-boss2A") {
+         pixelArt = enemyBossArt2A;
+      } else if(type == "enemy-boss1B") {
+         pixelArt = enemyBossArt1B;
+      } else if(type == "enemy-boss2B") {
+         pixelArt = enemyBossArt2B;
       }
       
       for(int row = 0; row < pixelArt.length; row ++) {
@@ -173,6 +213,12 @@ public class Utility {
                   break;
                case 'o':
                   g.setColor(new Color(255, 90, 13));
+                  break;
+               case 'p':
+                  g.setColor(new Color(186, 62, 217));
+                  break;
+               case 'm':
+                  g.setColor(new Color(255, 0, 113));
                   break;
                case '-':
                   drawPixel = false;
