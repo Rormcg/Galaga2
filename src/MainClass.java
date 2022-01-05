@@ -70,10 +70,11 @@ public void paintComponent(Graphics g) {
       lasers[i].draw(g);
    }
    
-   ship.draw(g);
    for(int i = 0; i < enemies.length; i ++) {
       enemies[i].draw(g);
    }
+   
+   ship.draw(g);
 }
 
 //update here
@@ -82,16 +83,28 @@ public void actionPerformed(ActionEvent e) {
    if(ship.getIsMoving()) {
       backdrop.update();
    }
+   boolean addToAttackFrequency = false;
    for(int i = 0; i < enemies.length; i ++) {
       Enemy a = enemies[i];
       a.update();
       
+      if(a.getIsDead() && a.getAttackFrequency() > 0) {
+         addToAttackFrequency = true;
+         a.setAttackFrequency(0);
+      }
       for(int j = 0; j < lasers.length; j ++) {
          Laser b = lasers[j];
          if(b.getType() == "player"  && !a.getIsDead() && !b.getIsDead() && b.getPos().x >= a.getPos().x - a.getSize().x && b.getPos().x <= a.getPos().x + a.getSize().x &&
          b.getPos().y >= a.getPos().y - a.getSize().y && b.getPos().y <= a.getPos().y + a.getSize().y) {
             b.setIsDead(true);
             a.setHealth(a.getHealth() - 1);
+         }
+      }
+   }
+   if(addToAttackFrequency) {
+      for(int i = 0; i < enemies.length; i ++) {
+         if(!enemies[i].getIsDead()) {
+            enemies[i].setAttackFrequency(enemies[i].getAttackFrequency() + 1);
          }
       }
    }
@@ -120,6 +133,7 @@ public void actionPerformed(ActionEvent e) {
    
    repaint();
 }
+
 
 }
 

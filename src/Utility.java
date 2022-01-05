@@ -5,13 +5,17 @@ import java.awt.Color;
 public class Utility {
    
    public static int random(int low, int high) {
-      return (int)(Math.random() * (high - low) + low);
+      return (int)(Math.random() * (high - low + 1) + low);
+   }
+   
+   public static double random(double low, double high) {
+      return (Math.random() * (high - low) + low);
    }
    
    public static int randomExcludeZero(int low, int high) {
       int num = 0;
       while(num == 0) {
-         num = (int)(Math.random() * (high - low) + low);
+         num = (int)(Math.random() * (high - low + 2) + low -1);
       }
       return num;
    }

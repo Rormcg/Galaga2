@@ -9,12 +9,16 @@ private Point2D.Double startingPos;
 private boolean isDead;
 private String type;
 private int timer = 0;
+private int screenWidth = 550;
+private int screenHeight = 650;
 private double rotation = 0;
 private Point2D.Double velocity = new Point2D.Double(0, 0);
 private boolean isAttacking = false;
 private boolean isShooting = false;
 private Point2D.Double size;
 private int health;
+private double speed = 2.5;
+private int attackFrequency = 10; 
 
 Enemy() {
    startingPos = new Point2D.Double(0, 0);
@@ -57,12 +61,14 @@ public void draw(Graphics g) {
       } else {
          if(health > 1) {
             if((timer / 40) % 2 == 0) {
+               //the green version (full health)
                Utility.drawPixelArt(0, 0, "enemy-boss1A", g, 2);
             } else {
                Utility.drawPixelArt(0, 0, "enemy-boss2A", g, 2);
             }
          } else {
             if((timer / 40) % 2 == 0) {
+               //the blue version (hit once)
                Utility.drawPixelArt(0, 0, "enemy-boss1B", g, 2);
             } else {
                Utility.drawPixelArt(0, 0, "enemy-boss2B", g, 2);
@@ -78,25 +84,51 @@ public void draw(Graphics g) {
 }
 
 public void update() {
-   if(health < 1) {
-      isDead = true;
-   }
    timer ++;
-   if(!isAttacking) {
-      pos.x = startingPos.x + Math.sin(timer / 60.0) * 65;
-   } else {
-      if(type == "enemy-bug") {
-         
-      } else if(type == "enemy-ship") {
+   
+   if(!isDead) {
+      if(health < 1) {
+         isDead = true;
+      }
       
+      if(Utility.random(1, 100000 / attackFrequency) == 5 && !isAttacking) {
+         isAttacking = true;
+         velocity.y = Utility.random(0.7, 1.8);
+         velocity.x = Utility.randomExcludeZero(-1, 1) * Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2));
+         System.out.println(Math.pow(velocity.y, 2));
+         System.out.println(Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2)));
+      }
+      
+      if(pos.y > screenHeight + 40) {
+         isAttacking = false;
+      }
+      
+      if(!isAttacking) {
+         //when not attacking, move back and forth
+         velocity.x = 0;
+         velocity.y = 0;
+         pos.x = startingPos.x + Math.sin(timer / 60.0) * 55;
+         pos.y = startingPos.y;
       } else {
-      
+         if(type == "enemy-bug") {
+            
+         } else if(type == "enemy-ship") {
+         
+         } else {
+         
+         }
+         if(pos.x + 0.5 * size.x >= screenWidth || pos.x - 0.5 * size.x <= 0 || 
+           (pos.x + 0.5 * size.x >= screenWidth * 0.5 && pos.x > 0 && pos.x - screenWidth * 0.5 < 0 && pos.y < 0.6 * screenHeight) || 
+           (pos.x - 0.5 * size.x <= screenWidth * 0.5 && pos.x < 0 && pos.x - screenWidth * 0.5 > 0 && pos.y < 0.6 * screenHeight)) {
+            velocity.x = -velocity.x;
+         }
+         
+         pos.x += velocity.x;
+         pos.y += velocity.y;
+         rotation =  Utility.vectorDirection(velocity.x, velocity.y);
       }
    }
    
-   pos.x += velocity.x;
-   pos.y += velocity.y;
-   rotation =  Utility.vectorDirection(velocity.x, velocity.y);
 }
 
 public Point2D.Double getPos() {
@@ -115,6 +147,14 @@ public int getHealth() {
    return health;
 }
 
+public int getAttackFrequency() {
+   return attackFrequency;
+}
+
+public void setAttackFrequency(int a) {
+   attackFrequency = a;
+}
+
 public void setHealth(int a) {
    health = a;
 }
@@ -122,5 +162,6 @@ public void setHealth(int a) {
 public void setIsDead(boolean a) {
    isDead = a;
 }
+
 
 }
