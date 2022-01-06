@@ -174,6 +174,48 @@ public class Utility {
          "----bb---bb----",
          "-----bb-bb-----",
          "------b-b------"};
+   private static String[] enemyExplosion1 = {
+         "-w---o-----",
+         "--r--ro-r--",
+         "---w-o--o--",
+         "-ro-rr-rr--",
+         "-o-r-r-wo--",
+         "r--r-r-r---",
+         "---or---o--",
+         "or-r-r-r-r-",
+         "rwo---r-o--",
+         "-o---r-----",
+         "--r----o---"};
+   private static String[] enemyExplosion2 = {
+         "-----o-------",
+         "--r-----r-o--",
+         "---w-o-------",
+         "----r--o-r-r-",
+         "---o-----r-w-",
+         "r-r---ro---r-",
+         "----r----o---",
+         "---wr-----w--",
+         "r---r---r----",
+         "--r---o--r---",
+         "---r-----o---",
+         "---o---wr----",
+         "---r------r--"};
+   private static String[] enemyExplosion3 = {
+         "-w---o-w-------",
+         "--r--ro-r-ow---",
+         "---w-o---o--o--",
+         "-r--r--o-r-rr--",
+         "-o-o--o--r-wo--",
+         "r-r----w---r-w-",
+         "-ow--o--o---o--",
+         "or--o--------r-",
+         "rwo---------o--",
+         "-o----o--r-w-o-",
+         "--rr-----o-o---",
+         "---o-w-wr-o-w--",
+         "---r-o----ro---",
+         "----o----o---o-",
+         "---------------"};
    private static String[] pixelArt;
    public static void drawPixelArt(double x, double y, String type, Graphics g, int pixelSize) {
       if(type == "ship") {
@@ -194,6 +236,12 @@ public class Utility {
          pixelArt = enemyBossArt1B;
       } else if(type == "enemy-boss2B") {
          pixelArt = enemyBossArt2B;
+      } else if(type == "enemy-explosion1") {
+         pixelArt = enemyExplosion1;
+      } else if(type == "enemy-explosion2") {
+         pixelArt = enemyExplosion2;
+      } else if(type == "enemy-explosion3") {
+         pixelArt = enemyExplosion3;
       }
       
       for(int row = 0; row < pixelArt.length; row ++) {

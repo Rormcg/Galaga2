@@ -18,7 +18,8 @@ private boolean isShooting = false;
 private Point2D.Double size;
 private int health;
 private double speed = 2.5;
-private int attackFrequency = 10; 
+private int attackFrequency = 10;
+private int explosionTimer = 9;
 
 Enemy() {
    startingPos = new Point2D.Double(0, 0);
@@ -80,6 +81,14 @@ public void draw(Graphics g) {
          g2D.rotate(Utility.toRadians(-rotation));
       }
       g2D.translate(-pos.x, -pos.y);
+   } else if(explosionTimer > 0) {
+      if(explosionTimer > 6) {
+         Utility.drawPixelArt(pos.x, pos.y, "enemy-explosion1", g, 2);
+      } else if(explosionTimer > 6) {
+         Utility.drawPixelArt(pos.x, pos.y, "enemy-explosion2", g, 2);
+      } else {
+         Utility.drawPixelArt(pos.x, pos.y, "enemy-explosion3", g, 2);
+      }
    }
 }
 
@@ -95,8 +104,6 @@ public void update() {
          isAttacking = true;
          velocity.y = Utility.random(0.7, 1.8);
          velocity.x = Utility.randomExcludeZero(-1, 1) * Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2));
-         System.out.println(Math.pow(velocity.y, 2));
-         System.out.println(Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2)));
       }
       
       if(pos.y > screenHeight + 40) {
@@ -127,6 +134,8 @@ public void update() {
          pos.y += velocity.y;
          rotation =  Utility.vectorDirection(velocity.x, velocity.y);
       }
+   } else {
+      explosionTimer --;
    }
    
 }
