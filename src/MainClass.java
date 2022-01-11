@@ -126,6 +126,27 @@ public void actionPerformed(ActionEvent e) {
          }
       }
    }
+   for(int i = 0; i < enemies.length; i ++) {
+      if(enemies[i].getIsShooting()) {
+         for(int j = 0; j < lasers.length; j ++) {
+            if(lasers[j].getIsDead() || lasers[j].getType() == "null") {
+               //create a new laser with a velocity pointing at the player
+               lasers[j] = new Laser(enemies[i].getPos().x, enemies[i].getPos().y, 
+               "enemy", ship.getPos().x - enemies[i].getPos().x, ship.getPos().y - enemies[i].getPos().y);
+               
+               //scale the new laser's velocity down to a magnitude of 5
+               lasers[j].setVelocity(
+               lasers[j].getVelocity().x * (5 / Math.sqrt(Math.pow(lasers[j].getVelocity().x, 2) + Math.pow(lasers[j].getVelocity().y, 2))), 
+               lasers[j].getVelocity().y * (5 / Math.sqrt(Math.pow(lasers[j].getVelocity().x, 2) + Math.pow(lasers[j].getVelocity().y, 2))));
+               
+               //System.out.println(lasers[i].getVelocity.x);
+               //System.out.println(Utility.vectorDirection(lasers[j].getVelocity().x, lasers[j].getVelocity().y));
+               enemies[i].setIsShooting(false);
+               break;
+            }
+         }
+      }
+   }
    
    for(int i = 0; i < lasers.length; i++) {
       lasers[i].update();
@@ -142,3 +163,12 @@ class RunMain {
       MainClass mainClass = new MainClass();
    }
 }
+
+
+/*
+Websites Used:
+   For how to change the magnitude of a vector:
+   https://stackoverflow.com/questions/41317291/setting-the-magnitude-of-a-2d-vector#:~:text=Let%27s%20vector%20components%20are%20vx%2C%20vy.%20It%27s%20current,magnitude%2C%20just%20multiply%20components%20by%20ratio%20of%20magnitudes%3A
+   
+   
+*/

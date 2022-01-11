@@ -8,7 +8,7 @@ private Point2D.Double pos;
 private int speed = 10;
 private Point2D.Double velocity;
 private String type;
-private boolean isDead;
+private boolean isDead = false;
 
 Laser(double x, double y, String type, double velX, double velY) {
    pos = new Point2D.Double(x, y);
@@ -39,7 +39,7 @@ public void update() {
    pos.x += velocity.x;
    pos.y += velocity.y;
    
-   if(pos.y > 600) {
+   if(pos.y > 660) {
       isDead = true;
    } else if(pos.y < -10) {
       isDead= true;
@@ -54,8 +54,16 @@ public String getType() {
    return type;
 }
 
+public Point2D.Double getVelocity() {
+   return velocity;
+}
+
 public Point2D.Double getPos() {
    return pos;
+}
+
+public void setVelocity(double x, double y) {
+   velocity = new Point2D.Double(x, y);
 }
 
 public void setIsDead(boolean a) {

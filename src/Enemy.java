@@ -36,6 +36,7 @@ Enemy(int x, int y, String type) {
    } else {
       size = new Point2D.Double(23, 23);
       health = 2;
+      attackFrequency += 30;
    }
 }
 
@@ -117,13 +118,22 @@ public void update() {
          pos.x = startingPos.x + Math.sin(timer / 60.0) * 55;
          pos.y = startingPos.y;
       } else {
+         //shoot once the enemy reaches a certain y-coordinate
+         if(pos.y <= 400 && pos.y > 400 - velocity.y) {
+            isShooting = true;
+         }
          if(type == "enemy-bug") {
             
          } else if(type == "enemy-ship") {
-         
+            //the enemy ships and bosses shoot more 
+            if(pos.y <= 350 && pos.y > 350 - velocity.y) {
+               isShooting = true;
+            }
          } else {
          
          }
+         
+         
          if(pos.x + 0.5 * size.x >= screenWidth || pos.x - 0.5 * size.x <= 0 || 
            (pos.x + 0.5 * size.x >= screenWidth * 0.5 && pos.x > 0 && pos.x - screenWidth * 0.5 < 0 && pos.y < 0.6 * screenHeight) || 
            (pos.x - 0.5 * size.x <= screenWidth * 0.5 && pos.x < 0 && pos.x - screenWidth * 0.5 > 0 && pos.y < 0.6 * screenHeight)) {
@@ -156,6 +166,10 @@ public int getHealth() {
    return health;
 }
 
+public boolean getIsShooting() {
+   return isShooting;
+}
+
 public int getAttackFrequency() {
    return attackFrequency;
 }
@@ -166,6 +180,10 @@ public void setAttackFrequency(int a) {
 
 public void setHealth(int a) {
    health = a;
+}
+
+public void setIsShooting(boolean a) {
+   isShooting = a;
 }
 
 public void setIsDead(boolean a) {
