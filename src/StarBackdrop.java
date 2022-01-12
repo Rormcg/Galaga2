@@ -10,6 +10,7 @@ private boolean[] isOn = new boolean[numStars];
 private double speed = 2;
 private Color[] colors = new Color[numStars];
 private Dimension size; //overall size
+private boolean isMoving = true;
 
 StarBackdrop(int width, int height) {
    size = new Dimension(width, height);
@@ -37,9 +38,11 @@ public void draw(Graphics g) {
 
 public void update() {
    for(int i = 0; i < numStars; i ++) {
-      positions[i].y += speed;
-      if(positions[i].y >= size.height + 50) {
-         positions[i].y = 0;
+      if(isMoving) {
+         positions[i].y += speed;
+         if(positions[i].y >= size.height + 50) {
+            positions[i].y = 0;
+         }
       }
       if(Utility.random(0, 120) == 5) {
          isOn[i] = false;
@@ -48,4 +51,9 @@ public void update() {
       }
    }
 }
+
+public void setIsMoving(boolean a) {
+   isMoving = a;
+}
+
 }

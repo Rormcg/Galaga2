@@ -43,6 +43,7 @@ public class Utility {
    o = orange
    p = purple
    m = magenta
+   l = light blue
    */
    private static String[] shipArt = {
          "-------w-------",
@@ -216,6 +217,57 @@ public class Utility {
          "---r-o----ro---",
          "----o----o---o-",
          "---------------"};
+   private static String[] playerExplosion1 = {
+         "---------r---b-",
+         "w--r-------w---",
+         "---w---r----r--",
+         "--r----rr--r---",
+         "-w--r-rr-----w-",
+         "--r----r-------",
+         "r--b-rrr-rr-w-b",
+         "r-w--r-r-rr---r",
+         "r--rr-rrr-r---r",
+         "----r-rrrr---rr",
+         "r--rrrrr--r--r-",
+         "-rrrr-rrrrrrr-r-",
+         "b--rr-rrrrrrrr-",
+         "-rrrrr-w-rr-rrw"};
+   private static String[] playerExplosion2 = {
+         "-r----bbb---r---r",
+         "--r-b-wwwwwb--rr-",
+         "--rrww-wwwwwb-rb-",
+         "---w-rww-w-bwrw--",
+         "b-wwwwwwwwwwr-wb-",
+         "-wwwwrwww-wwwbw--",
+         "-b-ww-wrwwwbb-b--",
+         "--wwwwrwrrwrwwb--",
+         "b-ww-wrrwrrrwwww-",
+         "-bw--wwrwwwrw--wb",
+         "--wwrrwr-wrwww-b-",
+         "bwwrwrww--wrw-ww-",
+         "--b-wwwwrrwrww-b-",
+         "-bwwr---wwwwrwb--",
+         "---brwwww-wwbrr--",
+         "--rrb-ww-www--rr-",
+         "-r-b-b-wwwwb----r"};
+   private static String[] playerExplosion3 = {
+         "-r----lll---r---r",
+         "--r-l-lllwwl--rr-",
+         "--rrww-wll--l-rl-",
+         "-l-w-lwl-wllwrl--",
+         "l-lwwwwrlwwwr-wl-",
+         "-wlwwrwlrrl-wlw--",
+         "-l-ww-wrwwwll-ll-",
+         "-rlwwwrwrrwrwwl--",
+         "l-lrlwrrwwlrwllw-",
+         "-lw--wwwwwwrw-lwl",
+         "-lwwrrlwwwrllw-l-",
+         "lwwwwrww--lrw-ww-",
+         "--l-wwlrwwlrwr-l-",
+         "-llwwr-llwwwrwl--",
+         "-l-lrwwwllwwwwll-",
+         "--rrl-ww-wll--rr-",
+         "-r-l-l-lllwl----r"};
    private static String[] pixelArt;
    public static void drawPixelArt(double x, double y, String type, Graphics g, int pixelSize) {
       if(type == "ship") {
@@ -242,6 +294,12 @@ public class Utility {
          pixelArt = enemyExplosion2;
       } else if(type == "enemy-explosion3") {
          pixelArt = enemyExplosion3;
+      } else if(type == "player-explosion1") {
+         pixelArt = playerExplosion1;
+      } else if(type == "player-explosion2") {
+         pixelArt = playerExplosion2;
+      } else if(type == "player-explosion3") {
+         pixelArt = playerExplosion3;
       }
       
       for(int row = 0; row < pixelArt.length; row ++) {
@@ -271,6 +329,9 @@ public class Utility {
                   break;
                case 'm':
                   g.setColor(new Color(255, 0, 113));
+                  break;
+               case 'l':
+                  g.setColor(new Color(0, 128, 255));
                   break;
                case '-':
                   drawPixel = false;

@@ -20,6 +20,7 @@ private int health;
 private double speed = 2.5;
 private int attackFrequency = 10;
 private int explosionTimer = 9;
+private boolean canAttack = true;
 
 Enemy() {
    startingPos = new Point2D.Double(0, 0);
@@ -31,10 +32,10 @@ Enemy(int x, int y, String type) {
    pos = new Point2D.Double(x, y);
    this.type = type;
    if(type == "enemy-bug" || type == "enemy-ship") {
-      size = new Point2D.Double(18, 13);
+      size = new Point2D.Double(28, 22);
       health = 1;
    } else {
-      size = new Point2D.Double(23, 23);
+      size = new Point2D.Double(32, 32);
       health = 2;
       attackFrequency += 30;
    }
@@ -101,10 +102,12 @@ public void update() {
          isDead = true;
       }
       
-      if(Utility.random(1, 100000 / attackFrequency) == 5 && !isAttacking) {
-         isAttacking = true;
-         velocity.y = Utility.random(0.7, 1.8);
-         velocity.x = Utility.randomExcludeZero(-1, 1) * Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2));
+      if(canAttack) {
+         if(Utility.random(1, 100000 / attackFrequency) == 5 && !isAttacking) {
+            isAttacking = true;
+            velocity.y = Utility.random(0.7, 1.8);
+            velocity.x = Utility.randomExcludeZero(-1, 1) * Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2));
+         }
       }
       
       if(pos.y > screenHeight + 40) {
@@ -119,18 +122,20 @@ public void update() {
          pos.y = startingPos.y;
       } else {
          //shoot once the enemy reaches a certain y-coordinate
-         if(pos.y <= 400 && pos.y > 400 - velocity.y) {
+         if(pos.y <= 250 && pos.y > 250 - velocity.y) {
             isShooting = true;
          }
          if(type == "enemy-bug") {
             
          } else if(type == "enemy-ship") {
             //the enemy ships and bosses shoot more 
-            if(pos.y <= 350 && pos.y > 350 - velocity.y) {
+            if(pos.y <= 300 && pos.y > 300 - velocity.y) {
                isShooting = true;
             }
          } else {
-         
+            if(pos.y <= 300 && pos.y > 300 - velocity.y) {
+               isShooting = true;
+            }
          }
          
          
@@ -174,6 +179,10 @@ public int getAttackFrequency() {
    return attackFrequency;
 }
 
+public String getType() {
+   return type;
+}
+
 public void setAttackFrequency(int a) {
    attackFrequency = a;
 }
@@ -188,6 +197,10 @@ public void setIsShooting(boolean a) {
 
 public void setIsDead(boolean a) {
    isDead = a;
+}
+
+public void setCanAttack(boolean a) {
+   canAttack = a;
 }
 
 
