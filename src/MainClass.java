@@ -10,8 +10,6 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 
 public class MainClass extends JComponent implements ActionListener {
 
@@ -22,10 +20,12 @@ private int numHits = 0;
 private int shotsFired = 0;
 private int score = 0;
 private int highScore = 20000;
+private String scene = "Start";
 
 private Ship ship = new Ship(275, 550, screenWidth);
 private StarBackdrop backdrop = new StarBackdrop(screenWidth, screenHeight);
 private EndScreen endScreen;
+private StartScreen startScreen = new StartScreen();
 private Enemy[] enemies = new Enemy[40];
 private Laser[] lasers = new Laser[100];
 
@@ -67,12 +67,31 @@ public void setup() {
    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    frame.setVisible(true);
    frame.addKeyListener(ship);
+   frame.addKeyListener(startScreen);
 }
 
 //draw here
 public void paintComponent(Graphics g) {
    backdrop.draw(g);
-   if(ship.getLives() > 0 || ship.getResetTimer() >= 0) {
+   
+   //draw the score and high score
+   g.setFont(new Font("Sans-serif", Font.BOLD, 20));
+   if(timerValue % 70 > 35) {
+      g.setColor(Color.BLACK);
+   } else {
+      g.setColor(Color.RED);
+   }
+   g.drawString("1UP", 35, 25);
+   g.setColor(Color.WHITE);
+   g.drawString("" + score, 25, 45);
+      
+   g.drawString("" + highScore, 255, 45);
+   g.setColor(Color.RED);
+   g.drawString("High Score", 230, 25);
+   
+   if(scene == "Start") {
+      startScreen.draw(g);
+   } else if(scene == "Game") {
       for(int i = 0; i < lasers.length; i++) {
          lasers[i].draw(g);
       }
@@ -83,7 +102,7 @@ public void paintComponent(Graphics g) {
       
       ship.draw(g);
       
-      
+      //display the ready and game over messages
       if(ship.getIsDead()) {
          if(ship.getLives() > 0) {
             g.setColor(new Color(0, 193, 193));
@@ -96,20 +115,11 @@ public void paintComponent(Graphics g) {
          }
       }
       
-      g.setFont(new Font("Sans-serif", Font.BOLD, 20));
-      if(timerValue % 70 > 35) {
-         g.setColor(Color.BLACK);
-      } else {
-         g.setColor(Color.RED);
+      //draw the amount of lives remaining
+      for(int i = 0; i < ship.getLives() - 1; i ++) {
+         Utility.drawPixelArt(20 + i * 40, 620, "ship", g, 2);
       }
-      g.drawString("1UP", 35, 25);
-      g.setColor(Color.WHITE);
-      g.drawString("" + score, 25, 45);
-      
-      g.drawString("" + highScore, 255, 45);
-      g.setColor(Color.RED);
-      g.drawString("High Score", 230, 25);
-   } else {
+   } else if(scene == "End") {
       endScreen.draw(g);
    }
 }
@@ -124,13 +134,41 @@ public void actionPerformed(ActionEvent e) {
       backdrop.setIsMoving(true);
    }
    backdrop.update();
-   
-   if(ship.getLives() > 0 || ship.getResetTimer() > 0) {
+   if(scene == "Start") {
+      if(startScreen.getSpacePressed()) {
+         scene = "Game";
+         numHits = 0;
+         shotsFired = 0;
+         score = 0;
+         ship.setLives(3);
+         ship.setPos(275, 550);
+         ship.setIsDead(true);
+         ship.setExplosionTimer(0);
+         for(int i = 0; i < enemies.length; i ++) {
+            enemies[i].setIsDead(false);
+            if(enemies[i].getType() == "enemy-boss") {
+               enemies[i].setHealth(2);
+               enemies[i].setAttackFrequency(30);
+            } else {
+               enemies[i].setHealth(1);
+               enemies[i].setAttackFrequency(10);
+            }
+            enemies[i].setPos(enemies[i].getStartingPos().x, enemies[i].getStartingPos().y);
+            enemies[i].setIsAttacking(false);
+            enemies[i].setExplosionTimer(9);
+         }
+      }
+   } else if(scene == "Game") {
+      if(ship.getLives() <= 0 && ship.getResetTimer() < 200) {
+         scene = "End";
+         endScreen = new EndScreen(180, 300, numHits, shotsFired);
+      }
       ship.update();
       //check if the ship is hit
       for(int j = 0; j < lasers.length; j ++) {
          Laser b = lasers[j];
          Ship a = ship;
+         //if a laser hits the ship
          if(b.getType() == "enemy"  && !a.getIsDead() && !b.getIsDead() && b.getPos().x >= a.getPos().x - a.getSize().x * 0.5
          && b.getPos().x <= a.getPos().x + a.getSize().x * 0.5 && b.getPos().y >= a.getPos().y - a.getSize().y * 0.5 
          && b.getPos().y <= a.getPos().y + a.getSize().y * 0.5) {
@@ -138,7 +176,7 @@ public void actionPerformed(ActionEvent e) {
             a.setIsDead(true);
             a.setLives(a.getLives() - 1);
             a.setExplosionTimer(18);
-            a.setResetTimer(500);
+            a.setResetTimer(400);
          }
       }
       
@@ -157,6 +195,18 @@ public void actionPerformed(ActionEvent e) {
             addToAttackFrequency = true;
             a.setAttackFrequency(0);
          }
+         
+         //check if hitting the player
+         if(!a.getIsDead() && !ship.getIsDead() && ship.getPos().x + ship.getSize().x * 0.5 >= a.getPos().x - a.getSize().x * 0.5
+         && ship.getPos().x - ship.getSize().x * 0.5 <= a.getPos().x + a.getSize().x * 0.5 && ship.getPos().y + ship.getSize().y * 0.5 >= a.getPos().y - a.getSize().y * 0.5 
+         && ship.getPos().y - ship.getSize().y * 0.5 <= a.getPos().y + a.getSize().y * 0.5) {
+            ship.setIsDead(true);
+            a.setHealth(a.getHealth() - 5);
+            ship.setLives(ship.getLives() - 1);
+            ship.setExplosionTimer(18);
+            ship.setResetTimer(500);
+         }
+         
          for(int j = 0; j < lasers.length; j ++) {
             Laser b = lasers[j];
             if(b.getType() == "player"  && !a.getIsDead() && !b.getIsDead() && b.getPos().x >= a.getPos().x - a.getSize().x * 0.5 
@@ -232,9 +282,11 @@ public void actionPerformed(ActionEvent e) {
       if(score > highScore) {
          highScore = score;
       }
-   } else {
-      endScreen = new EndScreen(180, 300, numHits, shotsFired);
-      ship.setResetTimer(-1);
+   } else if(scene == "End") {
+      if(endScreen.getTimer() <= 0) {
+         scene = "Start";
+         startScreen.setSpacePressed(false);
+      }
    }
    
    repaint();

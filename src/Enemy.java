@@ -17,7 +17,7 @@ private boolean isAttacking = false;
 private boolean isShooting = false;
 private Point2D.Double size;
 private int health;
-private double speed = 2.5;
+private double speed = 2.7;
 private int attackFrequency = 10;
 private int explosionTimer = 9;
 private boolean canAttack = true;
@@ -32,7 +32,7 @@ Enemy(int x, int y, String type) {
    pos = new Point2D.Double(x, y);
    this.type = type;
    if(type == "enemy-bug" || type == "enemy-ship") {
-      size = new Point2D.Double(28, 22);
+      size = new Point2D.Double(28, 26);
       health = 1;
    } else {
       size = new Point2D.Double(32, 32);
@@ -105,7 +105,7 @@ public void update() {
       if(canAttack) {
          if(Utility.random(1, 100000 / attackFrequency) == 5 && !isAttacking) {
             isAttacking = true;
-            velocity.y = Utility.random(0.7, 1.8);
+            velocity.y = Utility.random(1.0, 1.9);
             velocity.x = Utility.randomExcludeZero(-1, 1) * Math.sqrt(Math.pow(speed, 2) - Math.pow(velocity.y, 2));
          }
       }
@@ -183,12 +183,20 @@ public String getType() {
    return type;
 }
 
+public Point2D.Double getStartingPos() {
+   return startingPos;
+}
+
 public void setAttackFrequency(int a) {
    attackFrequency = a;
 }
 
 public void setHealth(int a) {
    health = a;
+}
+
+public void setIsAttacking(boolean a) {
+   isAttacking = a;
 }
 
 public void setIsShooting(boolean a) {
@@ -203,5 +211,13 @@ public void setCanAttack(boolean a) {
    canAttack = a;
 }
 
+
+public void setPos(double x, double y) {
+   pos = new Point2D.Double(x, y);
+}
+
+public void setExplosionTimer(int a) {
+   explosionTimer = a;
+}
 
 }

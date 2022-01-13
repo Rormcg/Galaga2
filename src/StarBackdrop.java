@@ -44,9 +44,9 @@ public void update() {
             positions[i].y = 0;
          }
       }
-      if(Utility.random(0, 120) == 5) {
+      if(Utility.random(0, 100) == 5) {
          isOn[i] = false;
-      } else if (Utility.random(0, 120) == 5) {
+      } else if (Utility.random(0, 100) == 5) {
          isOn[i] = true;
       }
    }

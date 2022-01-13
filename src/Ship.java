@@ -11,12 +11,12 @@ private Point2D.Double pos;
 private int speed = 3;
 private boolean isDead = false;
 private boolean leftPressed = false, rightPressed = false;
-private Point2D.Double size = new Point2D.Double(45, 24);
+private Point2D.Double size = new Point2D.Double(45, 28);
 private int xRestriction;
 private boolean isShooting;
 private int lives = 3;
 private int explosionTimer = 18;
-private int resetTimer = 500;
+private int resetTimer = 400;
 
 Ship(int x, int y, int xRestriction) {
    pos = new Point2D.Double(x, y);
@@ -52,6 +52,8 @@ public void update() {
       resetTimer --;
       if(resetTimer < 0 && lives > 0) {
             isDead = false;
+            pos.x = 275;
+            pos.y = 550;
       }
    }
 }
@@ -102,6 +104,10 @@ public void setLives(int a) {
 
 public void setIsShooting(boolean h) {
    isShooting = h;
+}
+
+public void setPos(double x, double y) {
+   pos = new Point2D.Double(x, y);
 }
 
 public void keyPressed(KeyEvent e) {

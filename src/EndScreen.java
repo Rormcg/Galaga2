@@ -8,6 +8,7 @@ public class EndScreen {
    private Point2D.Double pos;
    private double numHits;
    private double shotsFired;
+   private int timer = 500;
    
    private DecimalFormat percent = new DecimalFormat("#0.0%");
    private DecimalFormat integer = new DecimalFormat("#");
@@ -19,6 +20,7 @@ public class EndScreen {
    }
    
    public void draw(Graphics g) {
+      timer --;
       g.setColor(Color.RED);
       g.setFont(new Font("Sans-serif", Font.BOLD, 34));
       g.drawString("--Results--", (int)pos.x, (int)pos.y);
@@ -32,5 +34,13 @@ public class EndScreen {
       } else {
          g.drawString("Hit-to-miss ratio: 0%", (int)pos.x - 60, (int)pos.y + 120);
       }
+   }
+   
+   public int getTimer() {
+      return timer;
+   }
+   
+   public void setTimer(int a) {
+      timer = a;
    }
 }
