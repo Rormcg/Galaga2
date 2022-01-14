@@ -20,7 +20,10 @@ private int numHits = 0;
 private int shotsFired = 0;
 private int score = 0;
 private int highScore = 20000;
+
 private String scene = "Start";
+private int stage = 1;
+private int timeToNextStage = 300;
 
 private Ship ship = new Ship(275, 550, screenWidth);
 private StarBackdrop backdrop = new StarBackdrop(screenWidth, screenHeight);
@@ -92,27 +95,32 @@ public void paintComponent(Graphics g) {
    if(scene == "Start") {
       startScreen.draw(g);
    } else if(scene == "Game") {
+      
       for(int i = 0; i < lasers.length; i++) {
          lasers[i].draw(g);
       }
       
-      for(int i = 0; i < enemies.length; i ++) {
-         enemies[i].draw(g);
+      if(timeToNextStage < 1) {
+         for(int i = 0; i < enemies.length; i ++) {
+            enemies[i].draw(g);
+         }
       }
       
       ship.draw(g);
       
-      //display the ready and game over messages
+      //display the ready, stage, and game over messages
+      g.setColor(new Color(0, 193, 193));
+      g.setFont(new Font("Sans-serif", Font.BOLD, 34));
       if(ship.getIsDead()) {
-         if(ship.getLives() > 0) {
-            g.setColor(new Color(0, 193, 193));
-            g.setFont(new Font("Sans-serif", Font.BOLD, 34));
+         if(ship.getLives() > 0 && timeToNextStage < 1) {
             g.drawString("Ready", 220, 350);
-         } else {
-            g.setColor(new Color(0, 193, 193));
-            g.setFont(new Font("Sans-serif", Font.BOLD, 34));
+         } else if(ship.getLives() < 1) {
             g.drawString("Game Over", 185, 350);
          }
+      } 
+      
+      if(timeToNextStage > 0 && ship.getLives() > 0) {
+         g.drawString("Stage " + stage, 210, 350);
       }
       
       //draw the amount of lives remaining
@@ -137,6 +145,8 @@ public void actionPerformed(ActionEvent e) {
    if(scene == "Start") {
       if(startScreen.getSpacePressed()) {
          scene = "Game";
+         stage = 1;
+         timeToNextStage = 300;
          numHits = 0;
          shotsFired = 0;
          score = 0;
@@ -148,7 +158,7 @@ public void actionPerformed(ActionEvent e) {
             enemies[i].setIsDead(false);
             if(enemies[i].getType() == "enemy-boss") {
                enemies[i].setHealth(2);
-               enemies[i].setAttackFrequency(30);
+               enemies[i].setAttackFrequency(40);
             } else {
                enemies[i].setHealth(1);
                enemies[i].setAttackFrequency(10);
@@ -159,11 +169,15 @@ public void actionPerformed(ActionEvent e) {
          }
       }
    } else if(scene == "Game") {
+      timeToNextStage --;
       if(ship.getLives() <= 0 && ship.getResetTimer() < 200) {
          scene = "End";
          endScreen = new EndScreen(180, 300, numHits, shotsFired);
       }
-      ship.update();
+      
+      if(timeToNextStage < 1) {
+         ship.update();
+      }
       //check if the ship is hit
       for(int j = 0; j < lasers.length; j ++) {
          Laser b = lasers[j];
@@ -180,6 +194,9 @@ public void actionPerformed(ActionEvent e) {
          }
       }
       
+      //check how many enemies are dead
+      int numDead = 0;
+      
       //check if the enemies are hit
       boolean addToAttackFrequency = false;
       for(int i = 0; i < enemies.length; i ++) {
@@ -189,7 +206,13 @@ public void actionPerformed(ActionEvent e) {
          } else {
             a.setCanAttack(true);
          }
-         a.update();
+         if(timeToNextStage < 1) {
+            a.update();
+         }
+         
+         if(a.getIsDead()) {
+            numDead ++;
+         }
          
          if(a.getIsDead() && a.getAttackFrequency() > 0) {
             addToAttackFrequency = true;
@@ -230,6 +253,24 @@ public void actionPerformed(ActionEvent e) {
             if(!enemies[i].getIsDead()) {
                enemies[i].setAttackFrequency(enemies[i].getAttackFrequency() + 1);
             }
+         }
+      }
+      //check if all of the enemies are dead; if so, start next stage
+      if(numDead >= enemies.length) {
+         stage ++;
+         timeToNextStage = 300;
+         for(int i = 0; i < enemies.length; i ++) {
+            enemies[i].setIsDead(false);
+            if(enemies[i].getType() == "enemy-boss") {
+               enemies[i].setHealth(2);
+               enemies[i].setAttackFrequency(40 + stage * 2);
+            } else {
+               enemies[i].setHealth(1);
+               enemies[i].setAttackFrequency(10 + stage * 2);
+            }
+            enemies[i].setPos(enemies[i].getStartingPos().x, enemies[i].getStartingPos().y);
+            enemies[i].setIsAttacking(false);
+            enemies[i].setExplosionTimer(9);
          }
       }
       
