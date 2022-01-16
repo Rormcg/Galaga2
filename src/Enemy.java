@@ -32,10 +32,10 @@ Enemy(int x, int y, String type) {
    pos = new Point2D.Double(x, y);
    this.type = type;
    if(type == "enemy-bug" || type == "enemy-ship") {
-      size = new Point2D.Double(28, 26);
+      size = new Point2D.Double(30, 30);
       health = 1;
    } else {
-      size = new Point2D.Double(32, 32);
+      size = new Point2D.Double(35, 35);
       health = 2;
       attackFrequency += 30;
    }

@@ -15,8 +15,9 @@ private Point2D.Double size = new Point2D.Double(45, 28);
 private int xRestriction;
 private boolean isShooting;
 private int lives = 3;
+private int extraLives = 0;
 private int explosionTimer = 18;
-private int resetTimer = 400;
+private int resetTimer = 200;
 
 Ship(int x, int y, int xRestriction) {
    pos = new Point2D.Double(x, y);
@@ -84,6 +85,14 @@ public int getResetTimer() {
 
 public int getExplosionTimer() {
    return explosionTimer;
+}
+
+public int getExtraLives() {
+   return extraLives;
+}
+
+public void setExtraLives(int a) {
+   extraLives = a;
 }
 
 public void setIsDead(boolean a) {

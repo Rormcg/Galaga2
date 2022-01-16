@@ -19,7 +19,7 @@ private int timerValue = 0;
 private int numHits = 0;
 private int shotsFired = 0;
 private int score = 0;
-private int highScore = 20000;
+private int highScore = 10000;
 
 private String scene = "Start";
 private int stage = 1;
@@ -154,6 +154,7 @@ public void actionPerformed(ActionEvent e) {
          ship.setPos(275, 550);
          ship.setIsDead(true);
          ship.setExplosionTimer(0);
+         ship.setExtraLives(0);
          for(int i = 0; i < enemies.length; i ++) {
             enemies[i].setIsDead(false);
             if(enemies[i].getType() == "enemy-boss") {
@@ -173,6 +174,11 @@ public void actionPerformed(ActionEvent e) {
       if(ship.getLives() <= 0 && ship.getResetTimer() < 200) {
          scene = "End";
          endScreen = new EndScreen(180, 300, numHits, shotsFired);
+      }
+      
+      if((score > 10000 && ship.getExtraLives() < 1) || (ship.getExtraLives() > 0 && score / 25000 > ship.getExtraLives() - 1)) {
+         ship.setLives(ship.getLives() + 1);
+         ship.setExtraLives(ship.getExtraLives() + 1);
       }
       
       if(timeToNextStage < 1) {
@@ -239,11 +245,11 @@ public void actionPerformed(ActionEvent e) {
                a.setHealth(a.getHealth() - 1);
                numHits ++;
                if(a.getType() == "enemy-bug") {
-                  score += 100;
+                  score += 75;
                } else if(a.getType() == "enemy-ship") {
-                  score += 175;
+                  score += 125;
                } else {
-                  score += 200;
+                  score += 175;
                }
             }
          }
@@ -259,18 +265,23 @@ public void actionPerformed(ActionEvent e) {
       if(numDead >= enemies.length) {
          stage ++;
          timeToNextStage = 300;
+         ship.setIsDead(true);
+         ship.setResetTimer(200);
          for(int i = 0; i < enemies.length; i ++) {
             enemies[i].setIsDead(false);
             if(enemies[i].getType() == "enemy-boss") {
                enemies[i].setHealth(2);
-               enemies[i].setAttackFrequency(40 + stage * 2);
+               enemies[i].setAttackFrequency(40 + (stage - 1) * 3);
             } else {
                enemies[i].setHealth(1);
-               enemies[i].setAttackFrequency(10 + stage * 2);
+               enemies[i].setAttackFrequency(10 + (stage - 1) * 3);
             }
             enemies[i].setPos(enemies[i].getStartingPos().x, enemies[i].getStartingPos().y);
             enemies[i].setIsAttacking(false);
             enemies[i].setExplosionTimer(9);
+         }
+         for(int i = 0; i < lasers.length; i ++) {
+            lasers[i].setIsDead(true);
          }
       }
       

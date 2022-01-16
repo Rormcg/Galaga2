@@ -12,8 +12,12 @@ public class StartScreen implements KeyListener {
    
    public void draw(Graphics g) {
       g.setColor(new Color(0, 193, 193));
-      g.setFont(new Font("sans-serif", Font.BOLD, 30));
-      g.drawString("<Press space to start>", 110, 300);
+      g.setFont(new Font("sans-serif", Font.BOLD, 25));
+      g.drawString("Push space to start", 110, 300);
+      g.setColor(Color.YELLOW);
+      g.drawString("1ST BONUS FOR 10000 PTS", 90, 340);
+      g.drawString("2ND BONUS FOR 25000 PTS", 90, 380);
+      g.drawString("AND FOR EVERY 25000 PTS", 90, 420);
    }
    
    public boolean getSpacePressed() {
