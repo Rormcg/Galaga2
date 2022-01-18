@@ -1,3 +1,9 @@
+/*
+Author: Rory McGuire
+Date: 11/19/2022
+Purpose: This class is used as a model for the ship object that is controlled by the player
+*/
+
 import java.awt.geom.Point2D;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -7,29 +13,40 @@ import java.awt.Font;
 
 public class Ship implements KeyListener {
 
-private Point2D.Double pos;
-private int speed = 3;
-private boolean isDead = false;
-private boolean leftPressed = false, rightPressed = false;
-private Point2D.Double size = new Point2D.Double(45, 28);
-private int xRestriction;
-private boolean isShooting;
-private int lives = 3;
-private int extraLives = 0;
-private int explosionTimer = 18;
-private int resetTimer = 200;
+private Point2D.Double pos; //the position of the ship
+private int speed; //how fast the ship moves left/right
+private boolean isDead; //whether the ship is dead
+private boolean leftPressed, rightPressed; //whether the left/right arrow keys are pressed
+private Point2D.Double size; //the width/height of the ship
+private int xRestriction; //how wide the screen is
+private boolean isShooting; //whether the ship is shooting
+private int lives; //the number of lives remaining
+private int extraLives; //how many extra lives the player has received
+private int explosionTimer; //the timer used for reference for which frame of the explosion to show
+private int resetTimer; //the timer for how much longer the ship is suspended (when the "ready" or "game over" messages are displayed)
 
 Ship(int x, int y, int xRestriction) {
    pos = new Point2D.Double(x, y);
    this.xRestriction = xRestriction;
+   speed = 3;
+   isDead = false;
+   leftPressed = false;
+   rightPressed = false;
+   size = new Point2D.Double(45, 28);
+   lives = 3;
+   extraLives = 0;
+   explosionTimer = 18;
+   resetTimer = 200;
 }
 
+//draw the ship
 public void draw(Graphics g) {
    if(!isDead) {
       Utility.drawPixelArt(pos.x, pos.y, "ship", g, 3);
       //g.setColor(Color.YELLOW);
       //g.fillOval((int)pos.x - 5, (int)pos.y - 5, 10, 10);
    } else {
+      //if the ship is dead, draw the explosion - the frame# depends on the value of explosionTimer
       if(explosionTimer > 12) {
          Utility.drawPixelArt(pos.x, pos.y, "player-explosion1", g, 3);
       } else if(explosionTimer > 6) {
@@ -40,16 +57,20 @@ public void draw(Graphics g) {
    }
 }
 
+//update the ship
 public void update() {
    if(!isDead) {
+      //if the ship isn't dead, move it right or left if the right or left arrow keys are pressed
       if(rightPressed && pos.x < xRestriction - 0.6 * size.x) {
          pos.x += speed;
       } else if(leftPressed && pos.x > 0 + 0.6 * size.x) {
          pos.x -= speed;
       }
    } else if(explosionTimer > 0) {
+      //decrement explosionTimer until explosionTimer = 0
       explosionTimer --;
    } else {
+      //decrement resetTimer until it reaches 0, then if the ship still has lives, isDead = false again
       resetTimer --;
       if(resetTimer < 0 && lives > 0) {
             isDead = false;
@@ -119,6 +140,12 @@ public void setPos(double x, double y) {
    pos = new Point2D.Double(x, y);
 }
 
+public String toString() {
+   return "Pos: " + pos.x + ", " + pos.y +
+   "\nLives " + lives;
+}
+
+//check for the keys that are pressed, and change their corresponding variables to represent that
 public void keyPressed(KeyEvent e) {
    if(e.getKeyCode() == 32) {
       //space

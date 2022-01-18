@@ -1,3 +1,9 @@
+/*
+Author: Rory McGuire
+Date: 11/19/2022
+Purpose: This class is used as the place where all the code is run.
+*/
+
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.JComponent;
@@ -13,26 +19,44 @@ import java.awt.event.ActionListener;
 
 public class MainClass extends JComponent implements ActionListener {
 
-private JFrame frame;
-private int screenWidth = 550, screenHeight = 650;
-private int timerValue = 0;
-private int numHits = 0;
-private int shotsFired = 0;
-private int score = 0;
-private int highScore = 10000;
+private JFrame frame; //the frame on which everything happens
+private int screenWidth, screenHeight; //the width/height of that frame
+private int timerValue; //a timer value that is used for reference
+private int numHits; //the number of times the player has hit an enemy
+private int shotsFired; //the number of lasers that the player fired
+private int score; //the player's score
+private int highScore; //the high score
 
-private String scene = "Start";
-private int stage = 1;
-private int timeToNextStage = 300;
+private String scene; //the current scene of the program (is either "Start", "Game", or "End")
+private int stage; //the stage(level) that the player is currently on
+private int timeToNextStage; //the time left for displaying "Stage " + stage on the screen
 
-private Ship ship = new Ship(275, 550, screenWidth);
-private StarBackdrop backdrop = new StarBackdrop(screenWidth, screenHeight);
-private EndScreen endScreen;
-private StartScreen startScreen = new StartScreen();
-private Enemy[] enemies = new Enemy[40];
-private Laser[] lasers = new Laser[100];
+//objects
+private Ship ship; //the player/ship
+private StarBackdrop backdrop; //the moving star background
+private EndScreen endScreen; //the screen that displays at the end of the game
+private StartScreen startScreen; //the screen that displays at the start of the game
+private Enemy[] enemies; //the array of enemies
+private Laser[] lasers; //the array of lasers
 
 MainClass() {
+   screenWidth = 550;
+   screenHeight = 650;
+   timerValue = 0;
+   numHits = 0;
+   shotsFired = 0;
+   score = 0;
+   highScore = 10000;
+   scene = "Start";
+   stage = 1;
+   timeToNextStage = 300;
+   
+   ship = new Ship(275, 550, screenWidth);
+   backdrop = new StarBackdrop(screenWidth, screenHeight);
+   startScreen = new StartScreen();
+   enemies = new Enemy[40];
+   lasers = new Laser[100];
+   
    frame = new JFrame("Galaga");
    Container content = frame.getContentPane();
    content.setBackground(Color.BLACK);
@@ -43,7 +67,9 @@ MainClass() {
    t.start();
 }
 
+//set up the things that weren't in the constructor
 public void setup() {
+   //set up the array of enemies
    for(int i = 0; i < 4; i ++) {
       enemies[i] = new Enemy(210 + 40 * i, 90, "enemy-boss");
    }
@@ -60,11 +86,13 @@ public void setup() {
       enemies[i] = new Enemy(70 + 45 * (i - 30), 220, "enemy-bug");
    }
    
+   //set up the array of lasers
    for(int i = 0; i < lasers.length; i ++) {
       //fill the lasers array with placeholder objects
       lasers[i] = new Laser(-400, -400, "null", 0, 0);
    }
    
+   //set up the frame
    frame.setSize(screenWidth+17, screenHeight+40);
    frame.setLocationRelativeTo(null);
    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,14 +120,16 @@ public void paintComponent(Graphics g) {
    g.setColor(Color.RED);
    g.drawString("High Score", 230, 25);
    
+   //draw different things based on the scene
    if(scene == "Start") {
       startScreen.draw(g);
    } else if(scene == "Game") {
-      
+      //draw the lasers
       for(int i = 0; i < lasers.length; i++) {
          lasers[i].draw(g);
       }
       
+      //draw the enemies as long as the stage is not still transitioning
       if(timeToNextStage < 1) {
          for(int i = 0; i < enemies.length; i ++) {
             enemies[i].draw(g);
@@ -119,6 +149,7 @@ public void paintComponent(Graphics g) {
          }
       } 
       
+      //display the stage # as long as timeToNextStage > 0 and the ship isn't dead
       if(timeToNextStage > 0 && ship.getLives() > 0) {
          g.drawString("Stage " + stage, 210, 350);
       }
@@ -136,14 +167,19 @@ public void paintComponent(Graphics g) {
 public void actionPerformed(ActionEvent e) {
    timerValue ++;
    
+   //make the backdrop of stars move only if the player is not dead
    if(ship.getIsDead()) {
       backdrop.setIsMoving(false);
    } else {
       backdrop.setIsMoving(true);
    }
    backdrop.update();
+   
+   //update different things based on the scene
    if(scene == "Start") {
+      //change scenes to the game if the player pressed space
       if(startScreen.getSpacePressed()) {
+         //set up all necessary variables
          scene = "Game";
          stage = 1;
          timeToNextStage = 300;
@@ -171,11 +207,14 @@ public void actionPerformed(ActionEvent e) {
       }
    } else if(scene == "Game") {
       timeToNextStage --;
+      
+      //change the scene to "End" if the player is out of lives and the "Game Over" message is finished displaying
       if(ship.getLives() <= 0 && ship.getResetTimer() < 200) {
          scene = "End";
          endScreen = new EndScreen(180, 300, numHits, shotsFired);
       }
       
+      //give the player an extra life every time they reach a score of 10000 or if they reach a multiple of 25000
       if((score > 10000 && ship.getExtraLives() < 1) || (ship.getExtraLives() > 0 && score / 25000 > ship.getExtraLives() - 1)) {
          ship.setLives(ship.getLives() + 1);
          ship.setExtraLives(ship.getExtraLives() + 1);
@@ -184,6 +223,7 @@ public void actionPerformed(ActionEvent e) {
       if(timeToNextStage < 1) {
          ship.update();
       }
+      
       //check if the ship is hit
       for(int j = 0; j < lasers.length; j ++) {
          Laser b = lasers[j];
@@ -192,34 +232,41 @@ public void actionPerformed(ActionEvent e) {
          if(b.getType() == "enemy"  && !a.getIsDead() && !b.getIsDead() && b.getPos().x >= a.getPos().x - a.getSize().x * 0.5
          && b.getPos().x <= a.getPos().x + a.getSize().x * 0.5 && b.getPos().y >= a.getPos().y - a.getSize().y * 0.5 
          && b.getPos().y <= a.getPos().y + a.getSize().y * 0.5) {
+            //make the laser and ship die
             b.setIsDead(true);
             a.setIsDead(true);
+            //subtract a life
             a.setLives(a.getLives() - 1);
+            //start the ship's explosionTimer and reset timer
             a.setExplosionTimer(18);
             a.setResetTimer(400);
          }
       }
       
-      //check how many enemies are dead
-      int numDead = 0;
+      int numDead = 0; //used to check how many enemies are dead
       
       //check if the enemies are hit
       boolean addToAttackFrequency = false;
       for(int i = 0; i < enemies.length; i ++) {
          Enemy a = enemies[i];
+         
+         //the enemy can't start attacking if the player is dead
          if(ship.getIsDead()) {
             a.setCanAttack(false);
          } else {
             a.setCanAttack(true);
          }
+         
          if(timeToNextStage < 1) {
             a.update();
          }
          
+         //if this enemy is dead, add to numDead
          if(a.getIsDead()) {
             numDead ++;
          }
          
+         //every time an enemy dies, addToAttackFrequency = true (all other enemies will add 1 to their attackFrequency)
          if(a.getIsDead() && a.getAttackFrequency() > 0) {
             addToAttackFrequency = true;
             a.setAttackFrequency(0);
@@ -229,13 +276,17 @@ public void actionPerformed(ActionEvent e) {
          if(!a.getIsDead() && !ship.getIsDead() && ship.getPos().x + ship.getSize().x * 0.5 >= a.getPos().x - a.getSize().x * 0.5
          && ship.getPos().x - ship.getSize().x * 0.5 <= a.getPos().x + a.getSize().x * 0.5 && ship.getPos().y + ship.getSize().y * 0.5 >= a.getPos().y - a.getSize().y * 0.5 
          && ship.getPos().y - ship.getSize().y * 0.5 <= a.getPos().y + a.getSize().y * 0.5) {
+            //make the ship and the enemy die
             ship.setIsDead(true);
-            a.setHealth(a.getHealth() - 5);
+            a.setHealth(a.getHealth() - 2);
+            //subtract one from lives
             ship.setLives(ship.getLives() - 1);
+            //start the ship's explosionTimer and resetTimer
             ship.setExplosionTimer(18);
-            ship.setResetTimer(500);
+            ship.setResetTimer(400);
          }
          
+         //check if any enemy was hit by the player's lasers
          for(int j = 0; j < lasers.length; j ++) {
             Laser b = lasers[j];
             if(b.getType() == "player"  && !a.getIsDead() && !b.getIsDead() && b.getPos().x >= a.getPos().x - a.getSize().x * 0.5 
@@ -244,6 +295,7 @@ public void actionPerformed(ActionEvent e) {
                b.setIsDead(true);
                a.setHealth(a.getHealth() - 1);
                numHits ++;
+               //add to the score depending on which enemy type it was
                if(a.getType() == "enemy-bug") {
                   score += 75;
                } else if(a.getType() == "enemy-ship") {
@@ -254,6 +306,7 @@ public void actionPerformed(ActionEvent e) {
             }
          }
       }
+      //if an enemy just died, add 1 to each enemy's attackFrequency
       if(addToAttackFrequency) {
          for(int i = 0; i < enemies.length; i ++) {
             if(!enemies[i].getIsDead()) {
@@ -263,6 +316,7 @@ public void actionPerformed(ActionEvent e) {
       }
       //check if all of the enemies are dead; if so, start next stage
       if(numDead >= enemies.length) {
+         //reset all of the necessary variables
          stage ++;
          timeToNextStage = 300;
          ship.setIsDead(true);
@@ -287,14 +341,18 @@ public void actionPerformed(ActionEvent e) {
       
       //have the ship shoot
       if(ship.getIsShooting() && !ship.getIsDead()) {
-         int numPlayerBullets = 0;
+         
+         int numPlayerBullets = 0; //however many bullets the player has shot
          for(int i = 0; i < lasers.length; i ++) {
             if(lasers[i].getType() == "player" && lasers[i].getIsDead() != true) {
+               //add one to the # of player's bullets if this laser's type = "player" and this laser isn't dead
                numPlayerBullets ++;
             }
          }
+         //as long as the player does not already have two lasers, shoot a laser
          if(numPlayerBullets < 2) {
             for(int i = 0; i < lasers.length; i ++) {
+               //go through the lasers and replace the first one that is a dead laser or a placeholder laser with the new laser
                if(lasers[i].getIsDead() || lasers[i].getType() == "null") {
                   lasers[i] = new Laser(ship.getPos().x, ship.getPos().y - 24, "player", 0, -8);
                   ship.setIsShooting(false);
@@ -304,10 +362,11 @@ public void actionPerformed(ActionEvent e) {
             }
          }
       }
-      //hae the enemies shoot
+      //have the enemies shoot
       for(int i = 0; i < enemies.length; i ++) {
          if(enemies[i].getIsShooting()) {
             for(int j = 0; j < lasers.length; j ++) {
+               //go through the lasers and replace the first one that is a dead laser or a placeholder laser with the new laser
                if(lasers[j].getIsDead() || lasers[j].getType() == "null") {
                   //create a new laser with a velocity pointing at the player
                   lasers[j] = new Laser(enemies[i].getPos().x, enemies[i].getPos().y, 
@@ -331,10 +390,12 @@ public void actionPerformed(ActionEvent e) {
          lasers[i].update();
       }
       
+      //update the high score if score is greater than the high score
       if(score > highScore) {
          highScore = score;
       }
    } else if(scene == "End") {
+      //go back to the starting screen once the endScreen's timer is up
       if(endScreen.getTimer() <= 0) {
          scene = "Start";
          startScreen.setSpacePressed(false);
